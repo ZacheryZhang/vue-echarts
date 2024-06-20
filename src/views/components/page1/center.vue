@@ -6,9 +6,9 @@
             <image v-if='!status' x="250" y="320" :style="{opacity: number}" :xlink:href="$images.normal_bg" width="250"
                    height="170"/>
             <image v-else id="textBox_1" x="220" y="110" :xlink:href="$images.sensitive_bg" width="300" height="170"/>
-            <Modal v-model="modal" title="Video Recording">
-                <video ref="videoElement" autoplay></video>
-            </Modal>
+            <el-dialog title="无接触测量中..." :visible.sync="modal">
+              <video ref="videoElement" autoplay></video>
+            </el-dialog>
 
             <template>
                 <g v-for="(item, index) in swiperData" :key="item.title" v-on:click="selectBegin(item.title)">
@@ -43,14 +43,12 @@
 </template>
 
 <script>
-import { Modal } from 'iview';
 export default {
     name: '',
     props: {
         selectRangeDate: Array,
         _width: Number
     },
-    components:{Modal},
     data() {
         return {
             mediaRecorder: null,
@@ -226,7 +224,6 @@ export default {
           }
         },
         startRecording() {
-          this.modal=true
           navigator.mediaDevices
             .getUserMedia({ audio: true, video: true })
             .then(stream => {
@@ -245,7 +242,13 @@ export default {
               this.recording = true;
 
               // 将媒体流与视频元素关联以实时预览录制内容
-              this.videoElement.srcObject = stream;
+              // this.videoElement.srcObject = stream;
+              if ("srcObject" in this.videoElement) {
+                this.videoElement.srcObject = stream;
+              } else {
+                // Avoid using this in new browsers, as it is going away.
+                this.videoElement.src = URL.createObjectURL(stream);
+              }
             })
             .catch(error => {
               console.error('无法启动录制:', error);
@@ -268,7 +271,14 @@ export default {
         processRecordedData() {
           if (this.recordedChunks.length > 0) {
             const recordedBlob = new Blob(this.recordedChunks, { type: 'video/webm' });
-
+            const url = URL.createObjectURL(recordedBlob);
+            const a = document.createElement('a');
+            document.body.appendChild(a);
+            a.style = 'display: none';
+            a.href = url;
+            a.download = 'recordedVideo.webm';
+            a.click();
+            URL.revokeObjectURL(url);
             // 处理或保存录制的 Blob 数据
             console.log('录制完成，数据处理或保存:', recordedBlob);
 
