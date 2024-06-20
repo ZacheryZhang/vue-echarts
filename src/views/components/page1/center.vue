@@ -1,14 +1,14 @@
 <template>
     <div class="main">
-
+      <el-dialog title="无接触测量中..." :visible.sync="modal" :close-on-click-modal="false">
+              <video ref="videoElement" autoplay></video>
+            </el-dialog>
         <svg class="guideLine" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 783 500">
             <image x="5%" y="20" :xlink:href="$images.center" width="90%" height="100%"/>
             <image v-if='!status' x="250" y="320" :style="{opacity: number}" :xlink:href="$images.normal_bg" width="250"
                    height="170"/>
             <image v-else id="textBox_1" x="220" y="110" :xlink:href="$images.sensitive_bg" width="300" height="170"/>
-            <el-dialog title="无接触测量中..." :visible.sync="modal">
-              <video ref="videoElement" autoplay></video>
-            </el-dialog>
+
 
             <template>
                 <g v-for="(item, index) in swiperData" :key="item.title" v-on:click="selectBegin(item.title)">
@@ -48,6 +48,12 @@ export default {
     props: {
         selectRangeDate: Array,
         _width: Number
+    },
+    mounted() {
+          this.setChart();
+          console.log("this.$refs")
+          console.log(this.$refs)
+          this.videoElement = this.$refs.videoElement;
     },
     data() {
         return {
@@ -224,6 +230,7 @@ export default {
           }
         },
         startRecording() {
+          console.log(this.videoElement)
           navigator.mediaDevices
             .getUserMedia({ audio: true, video: true })
             .then(stream => {
@@ -396,10 +403,7 @@ export default {
         this.timer1 = null;
         this.swiperData.forEach(item=>item.status = false);
     },
-    mounted() {
-        this.setChart();
-        this.videoElement = this.$refs.videoElement;
-    }
+
 }
 </script>
 
