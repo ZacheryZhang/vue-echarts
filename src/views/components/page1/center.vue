@@ -220,8 +220,6 @@ export default {
         },
       show(){
           setTimeout(() => {
-            console.log("this.$refs")
-            console.log(this.$refs.videoElement)
             this.videoElement = this.$refs.videoElement;
           }, 0);
       },
@@ -254,12 +252,11 @@ export default {
 
               // 将媒体流与视频元素关联以实时预览录制内容
               // this.videoElement.srcObject = stream;
-              if ("srcObject" in this.videoElement) {
-                this.videoElement.srcObject = stream;
-              } else {
-                // Avoid using this in new browsers, as it is going away.
-                this.videoElement.src = URL.createObjectURL(stream);
-              }
+              this.videoElement.srcObject = stream;
+              // } else {
+              //   // Avoid using this in new browsers, as it is going away.
+              //   this.videoElement.src = URL.createObjectURL(stream);
+              // }
             })
             .catch(error => {
               console.error('无法启动录制:', error);
