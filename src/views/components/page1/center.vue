@@ -2,16 +2,13 @@
     <div class="main">
 
         <svg class="guideLine" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 783 500">
-<!--            <image x="5%" y="20" :xlink:href="$images.center" width="90%" height="100%"/>-->
+            <image x="5%" y="20" :xlink:href="$images.center" width="90%" height="100%"/>
             <image v-if='!status' x="250" y="320" :style="{opacity: number}" :xlink:href="$images.normal_bg" width="250"
                    height="170"/>
             <image v-else id="textBox_1" x="220" y="110" :xlink:href="$images.sensitive_bg" width="300" height="170"/>
-<!--          <Modal-->
-<!--            title="无接触测量中..."-->
-<!--            v-model="modal"-->
-<!--            :mask-closable="false">-->
-<!--             <video ref="videoElement" autoplay></video>-->
-<!--          </Modal>-->
+            <Modal v-model="modal" title="Video Recording">
+                <video ref="videoElement" autoplay></video>
+            </Modal>
 
             <template>
                 <g v-for="(item, index) in swiperData" :key="item.title" v-on:click="selectBegin(item.title)">
@@ -215,17 +212,17 @@ export default {
         }
     },
     methods: {
+        stopRecordingAfterTime() {
+            setTimeout(() => {
+                this.stopRecording();
+            }, 10000); // 10 seconds
+        },
         selectBegin(name){
           if (name=='心率' && !this.recording){
-            Modal.info({
-              title: '无接触测量中...',
-              content: (
-                <div>
-                  <video ref="videoElement" autoplay></video>
-                </div>
-              ),
-            });
-            this.startRecording()
+            this.startRecording();
+            this.modal=true;
+            this.stopRecordingAfterTime();
+
           }
         },
         startRecording() {
@@ -240,9 +237,6 @@ export default {
               this.mediaRecorder.ondataavailable = event => {
                 if (event.data.size > 0) {
                   this.recordedChunks.push(event.data);
-                  if (this.recordedChunks.size >200){
-                    this.stopRecording();
-                  }
                 }
 
               };
@@ -259,7 +253,6 @@ export default {
         },
 
         stopRecording() {
-          this.modal=false
           if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
             this.mediaRecorder.stop();
             this.recording = false;
@@ -269,6 +262,7 @@ export default {
 
             // 处理或保存录制的数据
             this.processRecordedData();
+            this.modal = false;
           }
         },
         processRecordedData() {
