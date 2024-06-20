@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-      <el-dialog title="无接触测量中..." :visible.sync="modal" :close-on-click-modal="false">
+      <el-dialog @open="show()" title="无接触测量中..." :visible.sync="modal" :close-on-click-modal="false" class="class_dialog_hospital">
               <video ref="videoElement" autoplay></video>
             </el-dialog>
         <svg class="guideLine" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 783 500">
@@ -51,9 +51,6 @@ export default {
     },
     mounted() {
           this.setChart();
-          console.log("this.$refs")
-          console.log(this.$refs)
-          this.videoElement = this.$refs.videoElement;
     },
     data() {
         return {
@@ -221,6 +218,13 @@ export default {
                 this.stopRecording();
             }, 10000); // 10 seconds
         },
+      show(){
+          setTimeout(() => {
+            console.log("this.$refs")
+            console.log(this.$refs.videoElement)
+            this.videoElement = this.$refs.videoElement;
+          }, 0);
+      },
         selectBegin(name){
           if (name=='心率' && !this.recording){
             this.startRecording();
@@ -230,7 +234,7 @@ export default {
           }
         },
         startRecording() {
-          console.log(this.videoElement)
+          // console.log(this.videoElement)
           navigator.mediaDevices
             .getUserMedia({ audio: true, video: true })
             .then(stream => {
@@ -535,6 +539,26 @@ export default {
                 fill: #000;
             }
         }
+    /*标题样式*/
+      .class_dialog_hospital .el-dialog__title{
+        font-size: 14px;
+      }
+
+      /*头区样式*/
+      .class_dialog_hospital .el-dialog__header{
+        height: 26px;
+        background: #e6e6e6;
+        padding: 4px 0 4px 10px;
+        border-top-left-radius: 9px;
+        border-top-right-radius: 9px;
+      }
+
+      /*头区退出按钮样式*/
+      .class_dialog_hospital .el-dialog__headerbtn{
+        top: 10px ;
+        right: 10px;
+        font-size: 16px;
+      }
 
         // .swap4{
         // stroke-dasharray: 110;
