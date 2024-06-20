@@ -1,16 +1,24 @@
 <template>
     <div class="main">
+
         <svg class="guideLine" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 783 500">
-            <image x="5%" y="20" :xlink:href="$images.center" width="90%" height="100%"/>
+<!--            <image x="5%" y="20" :xlink:href="$images.center" width="90%" height="100%"/>-->
             <image v-if='!status' x="250" y="320" :style="{opacity: number}" :xlink:href="$images.normal_bg" width="250"
                    height="170"/>
             <image v-else id="textBox_1" x="220" y="110" :xlink:href="$images.sensitive_bg" width="300" height="170"/>
+<!--          <Modal-->
+<!--            title="无接触测量中..."-->
+<!--            v-model="modal"-->
+<!--            :mask-closable="false">-->
+<!--             <video ref="videoElement" autoplay></video>-->
+<!--          </Modal>-->
+
             <template>
-                <g v-for="(item, index) in swiperData" :key="item.title">
+                <g v-for="(item, index) in swiperData" :key="item.title" v-on:click="selectBegin(item.title)">
                     <image class="bg_img" :x="item.image.x" :y="item.image.y"
                            :xlink:href="item.status?$images.sensitive_title:$images.normal_title" width="130"
                            height="50"/>
-                    <foreignObject class="title_1" @mouseenter="onmouseenter" @mouseleave="onmouseleave" :x="item.pos.x" :y="item.pos.y" :id="'title_'+ (index + 1)" width="100" height="40">
+                    <foreignObject class="title_1" @mouseenter="onmouseenter" @mouseleave="onmouseleave" :x="item.pos.x" :y="item.pos.y" :id="'title_'+ (index + 1)" width="100" height="40" >
                         <div class="title-text-box" xmlns="http://www.w3.org/1999/xhtml">
                             <p :style="{color:item.status?'#FFDBDB':''}">
                                 <span class="titleText">{{ item.title }}</span>
@@ -18,12 +26,12 @@
                             </p>
                         </div>
                     </foreignObject>
-                    <foreignObject class="text" x="250" y="320" ref="textBox" width="250" height="170">
+                    <foreignObject class="text" x="250" y="320" ref="textBox" width="250" height="170" >
                         <div class="text-box" xmlns="http://www.w3.org/1999/xhtml">
                             <div class="promptBox">
                                 <div class="promptTitle">{{item.title}}</div>
                                 <div class="psychologyContent">
-                                    对当前模块的一些描述...
+                                  {{ item.descript }}
                                 </div>
                             </div>
                         </div>
@@ -38,16 +46,22 @@
 </template>
 
 <script>
-
+import { Modal } from 'iview';
 export default {
     name: '',
     props: {
         selectRangeDate: Array,
         _width: Number
     },
+    components:{Modal},
     data() {
         return {
+            mediaRecorder: null,
+            mediaStream: null,
+            recordedChunks: [],
+            recording: false,
             timer1: null,
+            modal:false,
             status: false,
             timer: null,
             rid: null,
@@ -64,7 +78,8 @@ export default {
                     },
                     status: false,
                     rate:0,
-                    title: '标题一',
+                    title: '心率',
+                    descript: '心率是心脏每分钟跳动的次数，反映心脏功能和体能状态。正常成年人的静息心率一般在60-100次/分钟之间。',
                     pos: {
                       x: 102,
                       y:364
@@ -81,7 +96,8 @@ export default {
                     },
                     status: false,
                     rate:0,
-                    title: '标题二',
+                    title: '血压',
+                    descript: '血压由收缩压（高压）和舒张压（低压）组成，反映血液在动脉中的压力。正常血压范围一般为120/80 mmHg。',
                     pos: {
                       x: 76,
                       y:232
@@ -98,7 +114,8 @@ export default {
                     },
                     status: false,
                     rate:0,
-                    title: '标题三',
+                    title: '血氧饱和度',
+                    descript: '血氧饱和度是血液中氧气的含量，正常值在95%-100%之间。低于90%可能表示低氧血症。',
                     pos: {
                         x: 105,
                         y:118
@@ -115,7 +132,8 @@ export default {
                     },
                     status: false,
                     rate:0,
-                    title: '标题四',
+                    title: '血糖',
+                    descript: '血糖水平反映体内葡萄糖的浓度，正常空腹血糖范围为70-99 mg/dL（3.9-5.5 mmol/L）。',
                     pos: {
                       x: 328,
                       y: 49
@@ -132,7 +150,8 @@ export default {
                     },
                     status: false,
                     rate:0,
-                    title: '标题五',
+                    title: '心率变异性',
+                    descript: '心率变异性反映自主神经系统的活动，较高通常表示更好的健康状态和更好的适应能力。',
                     pos: {
                         x: 538,
                         y: 118
@@ -149,7 +168,8 @@ export default {
                     },
                     status: false,
                     rate:0,
-                    title: '标题六',
+                    title: '心电图',
+                    descript: '心电图反映心脏的电生理活动，用于检测心律不齐、心肌梗塞等心脏问题。',
                     pos: {
                         x: 578,
                         y: 230
@@ -166,7 +186,8 @@ export default {
                     },
                     status: false,
                     rate:0,
-                    title: '标题七',
+                    title: '呼吸频率',
+                    descript: '呼吸频率是每分钟的呼吸次数，正常成人的呼吸频率为12-20次/分钟。',
                     pos: {
                         x: 555,
                         y: 364
@@ -194,6 +215,73 @@ export default {
         }
     },
     methods: {
+        selectBegin(name){
+          if (name=='心率' && !this.recording){
+            Modal.info({
+              title: '无接触测量中...',
+              content: (
+                <div>
+                  <video ref="videoElement" autoplay></video>
+                </div>
+              ),
+            });
+            this.startRecording()
+          }
+        },
+        startRecording() {
+          this.modal=true
+          navigator.mediaDevices
+            .getUserMedia({ audio: true, video: true })
+            .then(stream => {
+              this.mediaStream = stream;
+              this.mediaRecorder = new MediaRecorder(stream);
+
+              // 设置录制事件监听器
+              this.mediaRecorder.ondataavailable = event => {
+                if (event.data.size > 0) {
+                  this.recordedChunks.push(event.data);
+                  if (this.recordedChunks.size >200){
+                    this.stopRecording();
+                  }
+                }
+
+              };
+
+              this.mediaRecorder.start();
+              this.recording = true;
+
+              // 将媒体流与视频元素关联以实时预览录制内容
+              this.videoElement.srcObject = stream;
+            })
+            .catch(error => {
+              console.error('无法启动录制:', error);
+            });
+        },
+
+        stopRecording() {
+          this.modal=false
+          if (this.mediaRecorder && this.mediaRecorder.state === 'recording') {
+            this.mediaRecorder.stop();
+            this.recording = false;
+
+            // 停止并释放媒体流
+            this.mediaStream.getTracks().forEach(track => track.stop());
+
+            // 处理或保存录制的数据
+            this.processRecordedData();
+          }
+        },
+        processRecordedData() {
+          if (this.recordedChunks.length > 0) {
+            const recordedBlob = new Blob(this.recordedChunks, { type: 'video/webm' });
+
+            // 处理或保存录制的 Blob 数据
+            console.log('录制完成，数据处理或保存:', recordedBlob);
+
+            // 清空录制的数据
+            this.recordedChunks = [];
+          }
+        },
         // mouseenter
         onmouseenter(e) {
             document.querySelectorAll('.text').forEach(item=>item.style.opacity = 0);
@@ -306,6 +394,7 @@ export default {
     },
     mounted() {
         this.setChart();
+        this.videoElement = this.$refs.videoElement;
     }
 }
 </script>

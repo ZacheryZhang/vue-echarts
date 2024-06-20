@@ -18,7 +18,7 @@
                 </Menu>
             </div>
             <div class="header-title">
-                大数据可视化平台
+                远程医疗智慧健康平台
             </div>
             <div class="selectRange">
                 <Menu mode="horizontal" @on-select="handleSelect" :active-name="activeName">
