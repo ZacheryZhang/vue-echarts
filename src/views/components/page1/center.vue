@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import { Message,Loading } from 'element-ui';
+
 export default {
     name: '',
     props: {
@@ -280,7 +282,7 @@ export default {
         },
         processRecordedData() {
           if (this.recordedChunks.length > 0) {
-            const loading = this.$loading({
+            let loadingInstance=Loading.service({
               lock: true,
               text: 'Loading',
               spinner: 'el-icon-loading',
@@ -304,9 +306,9 @@ export default {
             })
             .then(data => {
               console.log('视频上传成功');
-              loading.close();
+              loadingInstance.close();
               console.log(data); // 处理后端返回的数据
-              this.$message({
+              Message({
                 message: '测量成功，本次心率为'+data.hr,
                 type: 'success',
                 duration: 6000
@@ -314,7 +316,7 @@ export default {
             })
             .catch(error => {
               console.error('视频上传失败', error);
-              loading.close();
+              loadingInstance.close();
             });
 
             // 清空录制的数据
