@@ -80,7 +80,7 @@ export default {
                             color: '#1a3c58'
                         }
                     },
-                    name: "(次)",
+                    name: "(Bpm)",
                     nameTextStyle: {
                         color: "#75deef",
                         fontSize: 10,
@@ -105,7 +105,7 @@ export default {
                         splitNumber: 3,
                         inverse: true,
                         type: 'value',
-                        name: "(人)",
+                        name: "(dB)",
                         nameLocation: 'end',
                         nameTextStyle: {
                             color: "#75deef",
@@ -239,15 +239,15 @@ export default {
                     },
                     formatter: (data) => {
                         if (data[0].componentIndex == 0) { // hover 到上图的时候
-                            return data[0].name + '<br>' + data[0].seriesName + ":" + data[0].value + "次" + '<br>' + data[1].seriesName + ":" + data[1].value + "次"
+                            return data[0].name + '<br>' + data[0].seriesName + ":" + data[0].value + "Bpm" + '<br>' + data[1].seriesName + ":" + data[1].value + "Bpm"
                         } else {
-                            return data[0].name + '<br>' + data[0].seriesName + ":" + data[0].value + "人" + '<br>' + data[1].seriesName + ":" + data[1].value + "人"
+                            return data[0].name + '<br>' + data[0].seriesName + ":" + data[0].value + "dB" + '<br>' + data[1].seriesName + ":" + data[1].value + "dB"
                         }
                     }
                 },
                 series: [ // 面积图
                     {
-                        name: '数据1',
+                        name: '心率',
                         type: 'line',
                         symbol: 'none',
                         smooth: true,
@@ -296,7 +296,7 @@ export default {
                         data: this.setData('s')
                     },
                     {
-                        name: '数据2',
+                        name: '质量',
                         type: 'line',
                         symbol: 'none',
                         smooth: true,
@@ -344,7 +344,7 @@ export default {
                         data: this.setData('s')
                     },
                     {
-                        name: '数据1',
+                        name: '心率',
                         type: 'line',
                         symbol: 'none',
                         smooth: true,
@@ -395,7 +395,7 @@ export default {
                     },
 
                     {
-                        name: '数据2',
+                        name: '质量',
                         type: 'line',
                         symbol: 'none',
                         smooth: true,

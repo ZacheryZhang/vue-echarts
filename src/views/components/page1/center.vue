@@ -218,7 +218,7 @@ export default {
         stopRecordingAfterTime() {
             setTimeout(() => {
                 this.stopRecording();
-            }, 10000); // 10 seconds
+            }, 4000); // 10 seconds
         },
       show(){
           setTimeout(() => {
@@ -280,6 +280,12 @@ export default {
         },
         processRecordedData() {
           if (this.recordedChunks.length > 0) {
+            const loading = this.$loading({
+              lock: true,
+              text: 'Loading',
+              spinner: 'el-icon-loading',
+              background: 'rgba(0, 0, 0, 0.7)'
+            });
             const recordedBlob = new Blob(this.recordedChunks, { type: 'video/webm' });
 
             // 创建 FormData 对象，并将录制的视频添加到 FormData 中
@@ -290,13 +296,25 @@ export default {
               method: 'POST',
               body: formData
             })
-            .then(response => {
+             .then(response => {
+              if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return response.json(); // 解析响应为JSON格式
+            })
+            .then(data => {
               console.log('视频上传成功');
-              console.log(response);
-              // 处理后端返回的响应
+              loading.close();
+              console.log(data); // 处理后端返回的数据
+              this.$message({
+                message: '测量成功，本次心率为'+data.hr,
+                type: 'success',
+                duration: 6000
+              });
             })
             .catch(error => {
               console.error('视频上传失败', error);
+              loading.close();
             });
 
             // 清空录制的数据
