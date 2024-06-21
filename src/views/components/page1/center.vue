@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-     <el-dialog @open="show()" title="无接触测量中..." :visible.sync="modal" :close-on-click-modal="false" class="class_dialog_hospital">
+     <el-dialog @open="show()" title="无接触测量中..." :visible.sync="modal" :close-on-click-modal="false">
       <div class="video-container">
         <video ref="videoElement" autoplay></video>
       </div>
@@ -223,7 +223,7 @@ export default {
         stopRecordingAfterTime() {
             setTimeout(() => {
                 this.stopRecording();
-            }, 10000); // 10 seconds
+            }, 5000); // 10 seconds
         },
       show(){
           setTimeout(() => {
@@ -312,7 +312,7 @@ export default {
               loadingInstance.close();
               console.log(data); // 处理后端返回的数据
               Message({
-                message: '测量成功，本次心率为'+data.hr,
+                message: '测量成功，本次心率为'+data.hr+'Bpm',
                 type: 'success',
                 duration: 6000
               });
@@ -596,8 +596,8 @@ export default {
       }
   .video-container {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 500px;
+    height: 500px;
     display: flex;
     justify-content: center;
     align-items: center;
