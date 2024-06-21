@@ -143,7 +143,7 @@ export default {
             let option = {
                 title: [
                     {
-                        text: '【交易笔数分析】',
+                        text: '【血糖数值分析】',
                         textStyle: {
                             fontSize: 12,
                             color: '#75deef',
@@ -153,7 +153,7 @@ export default {
                         left: '20%'
                     },
                     {
-                        text: '【交易金额分析】',
+                        text: '【血压数值分析】',
                         textStyle: {
                             fontSize: 12,
                             color: '#75deef',
@@ -192,9 +192,9 @@ export default {
                     formatter: (params) => {
                         let seriesId = params.seriesId.substr(params.seriesId.length - 1, 1)
                         if (seriesId == 0) {
-                            return params.seriesName + "/" + params.name + "<br>" + "交易笔数:" + params.value + '笔'
+                            return params.seriesName + "/" + params.name + "<br>"  + params.value
                         } else {
-                            return params.seriesName + "/" + params.name + "<br>" + "交易金额:" + params.value + '元'
+                            return params.seriesName + "/" + params.name + "<br>" + params.value
                         }
 
                     },
@@ -317,7 +317,7 @@ export default {
                             fontSize: 9,
                             color: '#75deef'
                         },
-                        name: '(笔)',
+                        name: '',
                         nameGap: -5,
                         nameTextStyle: {
                             color: '#75deef',

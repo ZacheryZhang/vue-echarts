@@ -431,7 +431,7 @@ export default {
                 },
                 title: [
                     {
-                        text: '通话走势',
+                        text: '数据量',
                         bottom: '10%',
                         left: '2%',
                         textStyle: {
@@ -444,7 +444,7 @@ export default {
                     orient: 'horizontal',
                     top: '5%',
                     right: '5%',
-                    data: ['通话'],
+                    data: ['观测点'],
                     itemHeight: 7,
                     textStyle: {
                         color: '#75deef',
@@ -527,7 +527,7 @@ export default {
                         data: convertData(BJData)
                     },
                     {
-                        name: '通话',
+                        name: '观测点',
                         type: 'effectScatter',
                         coordinateSystem: 'geo',
                         data: BJData.map(function (dataItem) {
@@ -576,7 +576,7 @@ export default {
                         ],
 
                         type: 'line',
-                        name: '通话',
+                        name: '观测点',
                         symbol: 'none',
                         smooth: true,
 

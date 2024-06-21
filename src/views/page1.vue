@@ -31,7 +31,7 @@
             </Col>
             <Col span="7">
                 <div class="rightTop-1">
-                    <span class='title'><span class="title-gradient">世界地图分析</span></span>
+                    <span class='title'><span class="title-gradient">地域大数据分析</span></span>
                     <span class="angle1"></span>
                     <span class="angle2"></span>
                     <span class="angle3"></span>
@@ -39,7 +39,7 @@
                     <world-map ref="chart7"></world-map>
                 </div>
                 <div class="rightTop-2">
-                    <span class='title'><span class="title-gradient">模块六分析</span></span>
+                    <span class='title'><span class="title-gradient">呼吸频率分析</span></span>
                     <span class="angle1"></span>
                     <span class="angle2"></span>
                     <span class="angle3"></span>
@@ -61,7 +61,7 @@
         <Row class="listBottom">
             <Col span='9'>
                 <div class="content">
-                    <span class="title"><span class="title-gradient">模块二分析</span></span>
+                    <span class="title"><span class="title-gradient">血糖血压分析</span></span>
                     <span class="angle1"></span>
                     <span class="angle2"></span>
                     <span class="angle3"></span>
@@ -83,7 +83,7 @@
             </Col>
             <Col span='4'>
                 <div class="content">
-                    <span class="title"><span class="title-gradient">模块三分析</span></span>
+                    <span class="title"><span class="title-gradient">血氧分析</span></span>
                     <span class="angle1"></span>
                     <span class="angle2"></span>
                     <span class="angle3"></span>
@@ -101,13 +101,13 @@
                     <span class="angle2"></span>
                     <span class="angle3"></span>
                     <span class="angle4"></span>
-                    <span class="title"><span class="title-gradient">模块四分析</span></span>
+                    <span class="title"><span class="title-gradient">心率变异性分析</span></span>
                     <chart8 ref="chart16"></chart8>
                 </div>
             </Col>
             <Col span='7'>
                 <div class="content">
-                    <span class="title"><span class="title-gradient">模块五分析</span></span>
+                    <span class="title"><span class="title-gradient">心电图分析</span></span>
                     <span class="angle1"></span>
                     <span class="angle2"></span>
                     <span class="angle3"></span>
@@ -357,18 +357,18 @@ export default {
             },
             // 模块二数据
             data7: {
-                title: '标题',
+                title: '血糖统计',
                 data: [
                     {
                         value: 70,
-                        name: '数据1',
+                        name: '14.52',
                         itemStyle: {
                             color: '#c0232a'
                         }
                     },
                     {
                         value: 60,
-                        name: '数据2',
+                        name: '5.31',
                         itemStyle: {
                             color: '#2870e8'
                         }
@@ -377,14 +377,14 @@ export default {
                 data1: [
                     {
                         value: 40,
-                        name: '方式1',
+                        name: '异常血糖',
                         itemStyle: {
                             color: '#c0232a'
                         }
                     },
                     {
                         value: 60,
-                        name: '方式2',
+                        name: '正常血糖',
                         itemStyle: {
                             color: '#2870e8'
                         }
@@ -393,18 +393,18 @@ export default {
             },
             // 模块二数据
             data8: {
-                title: '标题',
+                title: '血压统计',
                 data: [
                     {
                         value: 80,
-                        name: '数据1',
+                        name: '164',
                         itemStyle: {
                             color: '#c0232a'
                         }
                     },
                     {
                         value: 60,
-                        name: '数据2',
+                        name: '83',
                         itemStyle: {
                             color: '#2870e8'
                         }
@@ -413,35 +413,35 @@ export default {
                 data1: [
                     {
                         value: 40,
-                        name: '方式1',
+                        name: '异常收缩压',
                         itemStyle: {
                             color: '#c2232a'
                         }
                     },
                     {
                         value: 60,
-                        name: '方式2',
+                        name: '异常舒张压',
                         itemStyle: {
                             color: '#fe672c'
                         }
                     },
                     {
                         value: 40,
-                        name: '方式3',
+                        name: '正常收缩压',
                         itemStyle: {
                             color: '#a262f2'
                         }
                     },
                     {
                         value: 20,
-                        name: '方式4',
+                        name: '正常舒张压',
                         itemStyle: {
                             color: '#2870e8'
                         }
                     },
                     {
                         value: 80,
-                        name: '方式5',
+                        name: '正常',
                         itemStyle: {
                             color: '#feed2c'
                         }

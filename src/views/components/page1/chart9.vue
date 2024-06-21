@@ -171,7 +171,7 @@ export default {
                         left: '15%'
                     },
                     {
-                        text: '【时长TOP10】',
+                        text: '【异常类型】',
                         textStyle: {
                             color: '#75deef',
                             fontSize: 12,
@@ -181,7 +181,7 @@ export default {
                         right: '14%'
                     },
                     {
-                        text: '【使用时长日分布】',
+                        text: '【ECG】',
                         textStyle: {
                             color: '#75deef',
                             fontSize: 12,
@@ -191,7 +191,7 @@ export default {
                         left: '14%'
                     },
                     {
-                        text: '【使用时长时段分布】',
+                        text: '【EMG】',
                         textStyle: {
                             color: '#75deef',
                             fontSize: 12,
