@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { Message,Loading } from 'element-ui';
+import { Message,Loading,Dialog } from 'element-ui';
 
 export default {
     name: '',
@@ -55,6 +55,9 @@ export default {
     },
     mounted() {
           this.setChart();
+    },
+    components:{
+      Message,Loading,Dialog
     },
     data() {
         return {
