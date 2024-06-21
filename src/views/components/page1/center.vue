@@ -1,8 +1,10 @@
 <template>
     <div class="main">
-      <el-dialog @open="show()" title="无接触测量中..." :visible.sync="modal" :close-on-click-modal="false" class="class_dialog_hospital">
-              <video ref="videoElement" autoplay></video>
-            </el-dialog>
+     <el-dialog @open="show()" title="无接触测量中..." :visible.sync="modal" :close-on-click-modal="false" class="class_dialog_hospital">
+      <div class="video-container">
+        <video ref="videoElement" autoplay></video>
+      </div>
+    </el-dialog>
         <svg class="guideLine" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 783 500">
             <image x="5%" y="20" :xlink:href="$images.center" width="90%" height="100%"/>
             <image v-if='!status' x="250" y="320" :style="{opacity: number}" :xlink:href="$images.normal_bg" width="250"
@@ -234,7 +236,7 @@ export default {
         startRecording() {
           // console.log(this.videoElement)
           navigator.mediaDevices
-            .getUserMedia({ audio: true, video: true })
+            .getUserMedia({ audio: false, video: true })
             .then(stream => {
               this.mediaStream = stream;
               this.mediaRecorder = new MediaRecorder(stream);
@@ -279,16 +281,23 @@ export default {
         processRecordedData() {
           if (this.recordedChunks.length > 0) {
             const recordedBlob = new Blob(this.recordedChunks, { type: 'video/webm' });
-            const url = URL.createObjectURL(recordedBlob);
-            const a = document.createElement('a');
-            document.body.appendChild(a);
-            a.style = 'display: none';
-            a.href = url;
-            a.download = 'recordedVideo.webm';
-            a.click();
-            URL.revokeObjectURL(url);
-            // 处理或保存录制的 Blob 数据
-            console.log('录制完成，数据处理或保存:', recordedBlob);
+
+            // 创建 FormData 对象，并将录制的视频添加到 FormData 中
+            const formData = new FormData();
+            formData.append('video', recordedBlob, 'recordedVideo.webm');
+            // 使用 fetch 方法将视频上传到后端
+            fetch('http://8.130.9.54:5000/uploadVideo', {
+              method: 'POST',
+              body: formData
+            })
+            .then(response => {
+              console.log('视频上传成功');
+              console.log(response);
+              // 处理后端返回的响应
+            })
+            .catch(error => {
+              console.error('视频上传失败', error);
+            });
 
             // 清空录制的数据
             this.recordedChunks = [];
@@ -410,6 +419,7 @@ export default {
 
 
 <style lang="less" scoped>
+
 .main {
     width: 100%;
     height: 100%;
@@ -536,6 +546,11 @@ export default {
                 fill: #000;
             }
         }
+      .class_dialog_hospital {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
     /*标题样式*/
       .class_dialog_hospital .el-dialog__title{
         font-size: 14px;
@@ -556,7 +571,19 @@ export default {
         right: 10px;
         font-size: 16px;
       }
+  .video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
+  video {
+    max-width: 100%;
+    max-height: 100%;
+  }
         // .swap4{
         // stroke-dasharray: 110;
         // stroke-dashoffset: 110;

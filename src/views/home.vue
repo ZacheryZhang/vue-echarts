@@ -4,13 +4,13 @@
             <div class="selectRange">
                 <Menu mode="horizontal" @on-select="(name) =>$route.name !== name && $router.push(name)" :active-name="$route.name">
                     <MenuItem name="page1">
-                        page1
+                        首页
                     </MenuItem>
                     <MenuItem name="page2">
-                        page2
+                        待开放
                     </MenuItem>
                     <MenuItem name="page3">
-                        page3
+                        待开放
                     </MenuItem>
 <!--                    <MenuItem name="page4">-->
 <!--                        page4-->
