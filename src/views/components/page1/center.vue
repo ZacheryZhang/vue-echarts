@@ -223,7 +223,7 @@ export default {
         stopRecordingAfterTime() {
             setTimeout(() => {
                 this.stopRecording();
-            }, 10000); // 10 seconds
+            }, 5000); // 10 seconds
         },
       show(){
           setTimeout(() => {
